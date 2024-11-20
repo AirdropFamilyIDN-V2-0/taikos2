@@ -1,4 +1,5 @@
 # TAIKO SEASON 2
+![image](https://github.com/user-attachments/assets/43865707-8350-4a39-a395-acb75de69c20)
 
 # Cek dasboard Taiko
 - https://trailblazers.taiko.xyz/profile
@@ -24,7 +25,7 @@ python autotxtaiko.py
 python -m pip install pip --upgrade
 pip install requests
 pip install web3==6.20.1
-pip install pytz
+pip install colorama
 ```
 - For Termux Android [Download Here](https://f-droid.org/repo/com.termux_1020.apk) [F-Droid Version]
 ```
@@ -39,7 +40,7 @@ pkg install -y rust binutils
 CARGO_BUILD_TARGET="$(rustc -Vv | grep "host" | awk '{print $2}')" pip install maturin
 pip install requests
 pip install web3==6.20.1
-pip install pytz
+pip install colorama
 ```
 - For Ubuntu 18.04 | 20.04 | 22.04 (VPS)
 ```
@@ -52,5 +53,5 @@ apt install python3-pip
 - Install Requirements
 pip install requests
 pip install web3==6.20.1
-pip install pytz
+pip install colorama
 ```
