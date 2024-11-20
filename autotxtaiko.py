@@ -2,7 +2,6 @@ import time
 import json
 from web3 import Web3
 from datetime import datetime, timedelta
-import pytz
 from colorama import init, Fore, Style
 
 # Inisialisasi colorama
