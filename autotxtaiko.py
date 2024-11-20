@@ -16,6 +16,13 @@ banner = """
 """
 print(Fore.CYAN + banner)
 
+# Membaca dan menghitung jumlah kunci pribadi
+with open('pvkeylist.txt', 'r') as file:
+    pvkeylist = file.read().splitlines()
+    num_keys = len(pvkeylist)
+
+print(Fore.CYAN + f"Jumlah Akun : {num_keys}\n")
+
 # Daftar RPC
 rpc_list = [
     "https://rpc.ankr.com/taiko",
@@ -49,16 +56,17 @@ delay_seconds = delay_minutes * 60
 
 # Input jumlah transaksi yang diinginkan
 num_transactions = int(input("Input jumlah transaksi : "))
-print("\n")
 
 # Menghitung jumlah transaksi yang telah dilakukan
 transactions_done = 0
+successful_transactions = {}
 
 voteaddr = web3.to_checksum_address("0x4D1E2145082d0AB0fDa4a973dC4887C7295e21aB")
 voteabi = json.loads('[{"stateMutability":"payable","type":"fallback"},{"inputs":[],"name":"vote","outputs":[],"stateMutability":"payable","type":"function"}]')
 vote_contract = web3.eth.contract(address=voteaddr, abi=voteabi)
 
 def vote(wallet, key):
+    global transactions_done
     try:
         nonce = web3.eth.get_transaction_count(wallet)
         gasAmount = vote_contract.functions.vote().estimate_gas({
@@ -81,7 +89,7 @@ def vote(wallet, key):
         print(f'TX-ID : {str(web3.to_hex(tx_hash))}')
         print(Fore.GREEN + f'Transaksi berhasil untuk alamat: {wallet}')
 
-        # Animasi hitung mundur untuk delay
+
         for remaining in range(delay_seconds, 0, -1):
             mins, secs = divmod(remaining, 60)
             timeformat = '{:02d}:{:02d}'.format(int(mins), int(secs))
@@ -89,20 +97,26 @@ def vote(wallet, key):
             time.sleep(1)
         print('\n')
 
+        transactions_done += 1
+
+        if wallet not in successful_transactions:
+            successful_transactions[wallet] = 0
+        successful_transactions[wallet] += 1
+        print(Fore.CYAN + f'Jumlah transaksi berhasil untuk {wallet}: {successful_transactions[wallet]}')
+
     except Exception as e:
         print(Fore.RED + f'Error: {e}')
         print(Fore.YELLOW + f'Transaksi gagal untuk alamat: {wallet}. Akan mencoba lagi...')
         vote(wallet, key)
         pass
 
-# Loop utama untuk melakukan transaksi
+
 while transactions_done < num_transactions:
     with open('pvkeylist.txt', 'r') as file:
         pvkeylist = file.read().splitlines()
         for loadkey in pvkeylist:
-            wallet = web3.eth.account.from_key(loadkey)
-            vote(wallet.address, wallet.key)
-            transactions_done += 1
             if transactions_done >= num_transactions:
                 print(Fore.GREEN + f"Tugas selesai {transactions_done} transaksi.")
                 exit()
+            wallet = web3.eth.account.from_key(loadkey)
+            vote(wallet.address, wallet.key)
