@@ -1,5 +1,5 @@
 # TAIKO SEASON 2
-![image](https://github.com/user-attachments/assets/43865707-8350-4a39-a395-acb75de69c20)
+![20 11 2024_23 33 55_REC](https://github.com/user-attachments/assets/55589a19-2010-4acc-b3ca-cbb51a84df2b)
 
 # Cek dasboard Taiko
 - https://trailblazers.taiko.xyz/profile
